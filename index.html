@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hangman Demo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-theme="default">
+    <main class="app">
+      <header class="app-header">
+        <h1 id="gameTitle">Hangman</h1>
+        <p id="themeTagline" class="subtitle">Pick a theme and save the word</p>
+        <section class="theme-controls">
+          <label for="themeSelect" class="theme-label">Theme</label>
+          <select id="themeSelect" aria-label="Choose theme"></select>
+        </section>
+      </header>
+
+      <div class="game-layout">
+        <aside class="game-left" aria-label="Hangman scene">
+          <section class="drawing">
+            <div id="hangmanStage" class="hangman-stage"></div>
+          </section>
+        </aside>
+
+        <div class="game-right" aria-label="Game controls">
+          <section class="status">
+            <p id="message">Guess a letter to start.</p>
+            <p id="lives">Lives: 6</p>
+          </section>
+
+          <section class="word-box" aria-live="polite">
+            <p id="maskedWord">_ _ _ _ _</p>
+          </section>
+
+          <section class="hint-area">
+            <button id="hintButton" type="button">
+              Hint (<span id="hintsLeft">2</span> left)
+            </button>
+            <p id="hintText" class="hint-text" hidden></p>
+          </section>
+
+          <section class="guess-controls">
+            <p class="keyboard-label">Pick a letter</p>
+            <div id="keyboard" class="keyboard" aria-label="Letter keyboard"></div>
+          </section>
+
+          <section class="letters">
+            <p><strong>Used:</strong> <span id="usedLetters">none</span></p>
+          </section>
+
+          <button id="resetButton" class="reset" type="button">New Game</button>
+        </div>
+      </div>
+    </main>
+
+    <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
