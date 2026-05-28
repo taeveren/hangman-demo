@@ -129,6 +129,7 @@ const THEMES = {
     label: "Hell",
     title: "Infernal Hangman",
     tagline: "One wrong guess closer to the pit",
+    figureLabel: "Hell hangman",
     words: [
       "demon",
       "inferno",
@@ -141,21 +142,23 @@ const THEMES = {
       "flames",
       "devil",
     ],
-    svg: `
-      <svg viewBox="0 0 220 220" role="img" aria-label="Hell hangman">
+    gallowSvg: `
+      <svg class="gallow-layer" viewBox="0 0 220 220" aria-hidden="true">
         <rect class="scene-bg" width="220" height="220" fill="transparent"/>
         <line class="gallow" x1="20" y1="200" x2="130" y2="200" stroke="#44403c" stroke-width="6"/>
         <line class="gallow" x1="50" y1="200" x2="50" y2="20" stroke="#44403c" stroke-width="6"/>
         <line class="gallow" x1="50" y1="20" x2="140" y2="20" stroke="#44403c" stroke-width="6"/>
         <line class="gallow" x1="140" y1="20" x2="140" y2="45" stroke="#ef4444" stroke-width="4"/>
-        <circle class="part" data-part="head" cx="140" cy="65" r="18" stroke="#ef4444" stroke-width="5" fill="none"/>
-        <line class="part" data-part="body" x1="140" y1="83" x2="140" y2="130" stroke="#ef4444" stroke-width="5"/>
-        <line class="part" data-part="leftArm" x1="140" y1="95" x2="115" y2="115" stroke="#ef4444" stroke-width="5"/>
-        <line class="part" data-part="rightArm" x1="140" y1="95" x2="165" y2="115" stroke="#ef4444" stroke-width="5"/>
-        <line class="part" data-part="leftLeg" x1="140" y1="130" x2="120" y2="160" stroke="#ef4444" stroke-width="5"/>
-        <line class="part" data-part="rightLeg" x1="140" y1="130" x2="160" y2="160" stroke="#ef4444" stroke-width="5"/>
       </svg>
     `,
+    partImages: {
+      head: "./assets/devil-head.png",
+      body: "./assets/devil-torso.png",
+      leftArm: "./assets/devil-left-arm.png",
+      rightArm: "./assets/devil-right-arm.png",
+      leftLeg: "./assets/devil-left-leg.png",
+      rightLeg: "./assets/devil-right-leg.png",
+    },
   },
   easter: {
     label: "Easter",
@@ -463,9 +466,27 @@ function handleGuess(rawInput) {
   checkWinOrLose();
 }
 
+function buildLayeredFigure(theme) {
+  const partMarkup = PART_ORDER.map(
+    (part) =>
+      `<img class="part part-img" data-part="${part}" src="${theme.partImages[part]}" alt="" />`,
+  ).join("");
+
+  return `
+    <div class="layered-figure" role="img" aria-label="${theme.figureLabel || theme.title}">
+      ${theme.gallowSvg.trim()}
+      <div class="layered-parts">${partMarkup}</div>
+    </div>
+  `;
+}
+
 function loadThemeFigure() {
   const theme = getActiveTheme();
-  hangmanStageEl.innerHTML = theme.svg.trim();
+  if (theme.partImages) {
+    hangmanStageEl.innerHTML = buildLayeredFigure(theme);
+  } else {
+    hangmanStageEl.innerHTML = theme.svg.trim();
+  }
   partEls = [...hangmanStageEl.querySelectorAll("[data-part]")];
 }
 
